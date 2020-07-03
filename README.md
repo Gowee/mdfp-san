@@ -1,37 +1,17 @@
-# ʕ •́؈•̀) `workers-typescript-template`
+# mdfp-san
+Search the Subject Alternative Name section of TLS certificates in public [CT logs](https://crt.sh) for possibly related domains (typically, [MDFP domains](https://github.com/EFForg/privacybadger/issues/781)).
 
-A batteries included template for kick starting a TypeScript Cloudflare worker project.
+## Endpoint
+`/query?q={SEARCH_CRITERIA}`
 
-## 🔋 Getting Started
+### Deployed Worker
+https://mdfp-san.bamboo.workers.dev/
 
-This template is meant to be used with [Wrangler](https://github.com/cloudflare/wrangler). If you are not already familiar with the tool, we recommend that you install the tool and configure it to work with your [Cloudflare account](https://dash.cloudflare.com). Documentation can be found [here](https://developers.cloudflare.com/workers/tooling/wrangler/).
+### Example
+https://mdfp-san.bamboo.workers.dev/query?q=example.org
 
-To generate using Wrangler, run this command:
-
-```bash
-wrangler generate my-ts-project https://github.com/EverlastingBugstopper/worker-typescript-template
-```
-
-### 👩 💻 Developing
-
-[`src/index.js`](./src/index.ts) calls the request handler in [`src/handler.ts`](./src/handler.ts), and will return the [request method](https://developer.mozilla.org/en-US/docs/Web/API/Request/method) for the given request.
-
-### 🧪 Testing
-
-This template comes with mocha tests which simply test that the request handler can handle each request method. `npm test` will run your tests.
-
-### ✏️ Formatting
-
-This template uses [`prettier`](https://prettier.io/) to format the project. To invoke, run `npm run format`.
-
-### 👀 Previewing and Publishing
-
-For information on how to preview and publish your worker, please see the [Wrangler docs](https://developers.cloudflare.com/workers/tooling/wrangler/commands/#publish).
-
-## 🤢 Issues
-
-If you run into issues with this specific project, please feel free to file an issue [here](https://github.com/cloudflare/workers-typescript-template/issues). If the problem is with Wrangler, please file an issue [here](https://github.com/cloudflare/wrangler/issues).
-
-## ⚠️ Caveats
-
-The `service-worker-mock` used by the tests is not a perfect representation of the Cloudflare Workers runtime. It is a general approximation. We recommend that you test end to end with `wrangler dev` in addition to a [staging environment](https://developers.cloudflare.com/workers/tooling/wrangler/configuration/environments/) to test things before deploying.
+## Notes / TODOs
+- Still under development to be usable enough. For example, planning to recursively query newly found domains / organizations for better coverage.
+- Known to be easily exceed the execution time limit of Cloudflare Worker. Planning to re-implement on other service/platform.
+- No Web UI available yet.
+- No CI or test.
