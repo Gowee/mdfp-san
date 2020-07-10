@@ -27,3 +27,14 @@ export function getDomainBase(domain: string): string {
   }
   return domain.slice(l)
 }
+
+export function isSubdomain(sub: string, domain: string): boolean {
+  if (sub.length < domain.length) {
+    return false
+  }
+  return (
+    sub.endsWith(domain) &&
+    (domain.length === sub.length ||
+      sub.charAt(sub.length - domain.length - 1) === '.')
+  )
+}

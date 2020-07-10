@@ -1,58 +1,28 @@
-import { cached, getDomainBase } from './utils'
-import * as Crtsh from './crtsh'
+import { cached } from './utils'
+import { handleSearch } from './search'
 
 export async function handleEvent(event: FetchEvent): Promise<Response> {
   const request = event.request
   const url = new URL(request.url)
-  switch (url.pathname) {
-    case '/':
-      return new Response(`request method: ${request.method}`)
-      break
-    case '/query':
-      return await cached(handleQuery)(event)
-      break
-    default:
-      return new Response(
-        `Resource Not Found at the endpoint ${url.pathname}`,
-        { status: 404 },
-      )
-  }
-}
-
-async function handleQuery(request: Request): Promise<Response> {
-  const url = new URL(request.url)
-  const q = url.searchParams.get('q')
-  if (q === null) {
-    throw Error('')
-  }
-
-  const seenCerts = new Set<number>()
-  const seenQs = new Set<string>([q])
-
-  const sans = new Set()
-
-  const entries = await Crtsh.searchCT(q)
-  for (const entry of entries.slice(0, 15)) {
-    if (seenCerts.has(entry.id)) {
-      continue
+  try {
+    switch (url.pathname) {
+      case '/':
+        return new Response(`request method: ${request.method}`)
+        break
+      case '/search':
+        return await cached(handleSearch)(event)
+        break
+      default:
+        return new Response(
+          `Resource Not Found at the endpoint ${url.pathname}`,
+          { status: 404 },
+        )
     }
-    seenCerts.add(entry.id)
-
-    const cert = await Crtsh.fetchCertInfo(entry.id)
-    console.log(cert)
-    if (cert === null) {
-      continue
+  } catch (e) {
+    if (e instanceof ClientError) {
+      return new Response(e.message, { status: 400 })
+    } else {
+      return new Response(e, { status: 500 })
     }
-    sans.add(getDomainBase(cert.commonName))
-    console.log('CN', cert.commonName)
-    for (const san of cert.subjectAlternativeNames) {
-      sans.add(getDomainBase(san))
-    }
-    console.log('done')
   }
-
-  return new Response(
-    JSON.stringify({ domains: Array.from(sans), _t: new Date() }),
-    { headers: { 'Content-Type': 'application/json' } },
-  )
 }

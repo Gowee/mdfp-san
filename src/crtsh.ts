@@ -42,7 +42,7 @@ export async function searchCT(q: string): Promise<CTLogEntry[]> {
 
 const PATTERN_TEXT_START = '<TD class="text">'
 const PATTERN_TEXT_END = '</TD>'
-const PATTERN_SUBJECT = /Subject:\s+commonName\s*=\s*(?<commonName>\S+?)\s+organizationName\s*=\s*(?<organizationName>[^\n]+)?\s/
+const PATTERN_SUBJECT = /Subject:\s+commonName\s*=\s*(?<commonName>\S+?)\s+(organizationName\s*=\s*(?<organizationName>[^\n]+))?\s/
 const PATTERN_SAN_TEXT = /Subject Alternative Name:\s*(?:DNS:\S+\s+)*/
 const PATTERN_SAN_DNS = /DNS:\s*(?<dns>\S+)[^\n]*\n/g
 const PATTERN_WHITESPACES = /(&nbsp;|<BR>)/g
@@ -70,14 +70,14 @@ export async function fetchCertInfo(
         return '\n'
       }
     })
-  // console.log(textStart, textEnd, text);
-  // text.replace("&nbsp;", " ");
-  // text.replace("<BR>", "\n");
-  // console.log(text);
+  // console.log(textStart, textEnd, text)
+  // text.replace('&nbsp;', ' ')
+  // text.replace('<BR>', '\n')
+  // console.log(text)
 
   // extract subject
   const subject = PATTERN_SUBJECT.exec(text)
-  // console.log(PATTERN_SUBJECT, text, subject?.groups);
+  // console.log(PATTERN_SUBJECT, text, subject?.groups)
   const commonName = subject?.groups?.commonName ?? ''
   const organizationName = subject?.groups?.organizationName ?? null
 
