@@ -1,4 +1,5 @@
 import { Deque } from '@blakeembrey/deque'
+import { ClientError } from './types'
 
 import {
   getDomainBase,
@@ -45,7 +46,7 @@ export async function handleQuery(request: Request): Promise<Response> {
         continue
       }
       seenCerts.add(entry.id)
-      console.log(`See cert:`, entry);
+      console.log(`See cert:`, entry)
 
       // filter out: certs used by some public CDNs & certs expired more than 6 months
       // There are some rare cases where fresh certs are not uploaded to Comodo's CT.

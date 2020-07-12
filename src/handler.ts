@@ -1,4 +1,5 @@
 import { cached } from './utils'
+import { ClientError } from './types'
 import { handleQuery } from './query'
 
 export async function handleEvent(event: FetchEvent): Promise<Response> {

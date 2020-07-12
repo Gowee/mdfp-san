@@ -71,7 +71,8 @@ export async function fetchCertInfo(
   // extract subject
   const subject = PATTERN_SUBJECT.exec(text)
   // console.log(PATTERN_SUBJECT, text, subject?.groups)
-  const commonName = subject?.groups?.commonName ?? 'UNEXPECTED_EMPTY_COMMONNAME'
+  const commonName =
+    subject?.groups?.commonName ?? 'UNEXPECTED_EMPTY_COMMONNAME'
   const organizationName = subject?.groups?.organizationName ?? null
 
   // extract SANs
@@ -80,7 +81,9 @@ export async function fetchCertInfo(
   // console.log(san_text, matches);
   const subjectAlternativeNames: string[] = []
   for (const match of matches) {
-    subjectAlternativeNames.push(match?.groups?.dns ?? 'UNEXPECTED_EMPTY_SAN_DNS')
+    subjectAlternativeNames.push(
+      match?.groups?.dns ?? 'UNEXPECTED_EMPTY_SAN_DNS',
+    )
   }
   // console.log(commonName, organizationName, JSON.stringify(subjectAlternativeNames));
   return {
