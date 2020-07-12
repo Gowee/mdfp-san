@@ -111,7 +111,7 @@ export async function handleQuery(request: Request): Promise<Response> {
     JSON.stringify({
       domains: Array.from(domains),
       _t: new Date(),
-      _certs_matched: processedCerts,
+      _certs_related: processedCerts,
       _certs_seen: seenCerts.size,
       _requests_sent: requests,
     }),
