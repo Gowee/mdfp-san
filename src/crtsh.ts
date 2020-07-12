@@ -21,7 +21,6 @@ const COMMON_INIT = {
     // Tell Cloudflare's CDN to always cache this fetch regardless of content type
     // for a max of 5 seconds before revalidating the resource
     cacheTtl: 86400, // sets TTL to 5 and cacheEverything to true
-    //Enterprise only feature, see Cache API for other plans
     cacheEverything: true, // override the default "cacheability" of the asset. For TTL, Cloudflare will still rely on headers set by the origin.
   },
   headers: {
