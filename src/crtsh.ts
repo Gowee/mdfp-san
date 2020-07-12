@@ -1,17 +1,11 @@
-// import { Certificate } from '@fidm/x509';
-// Nullish coalescing is not available with webpack currectly,
-// ref: https://github.com/webpack/webpack/issues/10227 .
-// So we temporarily use es2019, which lacks of `string.MatchAll`.
-import 'core-js/features/string/match-all'
-
 export interface CTLogEntry {
   issuer_ca_id: number
   issuer_name: string
   name_value: string
   id: number
-  entry_timestamp: Date
-  not_before: Date
-  not_after: Date
+  entry_timestamp: string
+  not_before: string
+  not_after: string
 }
 
 export interface CertInfo {
@@ -34,7 +28,7 @@ const COMMON_INIT = {
 }
 
 export async function searchCT(q: string): Promise<CTLogEntry[]> {
-  const url = `https://crt.sh/?q=${q}&output=json`
+  const url = `https://crt.sh/?q=${encodeURIComponent(q)}&output=json`
   const r = await fetch(url, COMMON_INIT)
   const d = await r.json()
   return d
@@ -42,7 +36,7 @@ export async function searchCT(q: string): Promise<CTLogEntry[]> {
 
 const PATTERN_TEXT_START = '<TD class="text">'
 const PATTERN_TEXT_END = '</TD>'
-const PATTERN_SUBJECT = /Subject:\s+commonName\s*=\s*(?<commonName>\S+?)\s+organizationName\s*=\s*(?<organizationName>[^\n]+)?\s/
+const PATTERN_SUBJECT = /Subject:\s+commonName\s*=\s*(?<commonName>\S+?)\s+(organizationName\s*=\s*(?<organizationName>[^\n]+))?\s/
 const PATTERN_SAN_TEXT = /Subject Alternative Name:\s*(?:DNS:\S+\s+)*/
 const PATTERN_SAN_DNS = /DNS:\s*(?<dns>\S+)[^\n]*\n/g
 const PATTERN_WHITESPACES = /(&nbsp;|<BR>)/g
@@ -53,6 +47,8 @@ export async function fetchCertInfo(
   const url = `https://crt.sh/?id=${entry_id}`
   const r = await fetch(url, COMMON_INIT)
   const d = await r.text()
+
+  // TODO: parse PEM (X509 cert in ASN.1) directly instead of text searching
 
   // extract cert text
   const textStart = d.indexOf(PATTERN_TEXT_START)
@@ -70,26 +66,26 @@ export async function fetchCertInfo(
         return '\n'
       }
     })
-  // console.log(textStart, textEnd, text);
-  // text.replace("&nbsp;", " ");
-  // text.replace("<BR>", "\n");
-  // console.log(text);
+  // console.log(textStart, textEnd, text)
 
   // extract subject
   const subject = PATTERN_SUBJECT.exec(text)
-  // console.log(PATTERN_SUBJECT, text, subject?.groups);
-  const commonName = subject?.groups?.commonName ?? ''
+  // console.log(PATTERN_SUBJECT, text, subject?.groups)
+  const commonName =
+    subject?.groups?.commonName ?? 'UNEXPECTED_EMPTY_COMMONNAME'
   const organizationName = subject?.groups?.organizationName ?? null
 
   // extract SANs
   const san_text = (PATTERN_SAN_TEXT.exec(text) ?? [''])[0]
   const matches = san_text.matchAll(PATTERN_SAN_DNS)
-  // console.log(san_text, PATTERN_SAN_DNS, matches);
+  // console.log(san_text, matches);
   const subjectAlternativeNames: string[] = []
   for (const match of matches) {
-    subjectAlternativeNames.push(match?.groups?.dns ?? '')
+    subjectAlternativeNames.push(
+      match?.groups?.dns ?? 'UNEXPECTED_EMPTY_SAN_DNS',
+    )
   }
-  // console.log("!!!", commonName, organizationName, JSON.stringify(subjectAlternativeNames));
+  // console.log(commonName, organizationName, JSON.stringify(subjectAlternativeNames));
   return {
     commonName,
     organizationName,

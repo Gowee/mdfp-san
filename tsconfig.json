@@ -3,7 +3,7 @@
     "outDir": "./dist",
     "module": "commonjs",
     "target": "es2019",
-    "lib": ["es2019", "webworker"],
+    "lib": ["es2019", "webworker", "es2020.string"],
     "types": ["@cloudflare/workers-types"],
     "alwaysStrict": true,
     "strict": true,
