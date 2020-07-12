@@ -1,9 +1,3 @@
-// import { Certificate } from '@fidm/x509';
-// Nullish coalescing is not available with webpack currectly,
-// ref: https://github.com/webpack/webpack/issues/10227 .
-// So we temporarily use es2019, which lacks of `string.MatchAll`.
-import 'core-js/features/string/match-all'
-
 export interface CTLogEntry {
   issuer_ca_id: number
   issuer_name: string
