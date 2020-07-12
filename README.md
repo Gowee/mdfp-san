@@ -11,8 +11,11 @@ Search the Subject Alternative Name section of TLS certificates in public [CT lo
 https://mdfp-san.bamboo.workers.dev/
 
 ### Example
+https://mdfp-san.bamboo.workers.dev/query?q=example.org 
+https://mdfp-san.bamboo.workers.dev/query?q=jd.hk
+https://mdfp-san.bamboo.workers.dev/query?q=yandex.com
 
-https://mdfp-san.bamboo.workers.dev/query?q=example.org
+(*It does take a long while for the first loading*)
 
 ## Notes / TODOs
 
