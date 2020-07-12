@@ -28,7 +28,7 @@ const COMMON_INIT = {
 }
 
 export async function searchCT(q: string): Promise<CTLogEntry[]> {
-  const url = `https://crt.sh/?q=${q}&output=json`
+  const url = `https://crt.sh/?q=${encodeURIComponent(q)}&output=json`
   const r = await fetch(url, COMMON_INIT)
   const d = await r.json()
   return d
@@ -71,18 +71,18 @@ export async function fetchCertInfo(
   // extract subject
   const subject = PATTERN_SUBJECT.exec(text)
   // console.log(PATTERN_SUBJECT, text, subject?.groups)
-  const commonName = subject?.groups?.commonName ?? ''
+  const commonName = subject?.groups?.commonName ?? 'UNEXPECTED_EMPTY_COMMONNAME'
   const organizationName = subject?.groups?.organizationName ?? null
 
   // extract SANs
   const san_text = (PATTERN_SAN_TEXT.exec(text) ?? [''])[0]
   const matches = san_text.matchAll(PATTERN_SAN_DNS)
-  // console.log(san_text, PATTERN_SAN_DNS, matches);
+  // console.log(san_text, matches);
   const subjectAlternativeNames: string[] = []
   for (const match of matches) {
-    subjectAlternativeNames.push(match?.groups?.dns ?? '')
+    subjectAlternativeNames.push(match?.groups?.dns ?? 'UNEXPECTED_EMPTY_SAN_DNS')
   }
-  // console.log("!!!", commonName, organizationName, JSON.stringify(subjectAlternativeNames));
+  // console.log(commonName, organizationName, JSON.stringify(subjectAlternativeNames));
   return {
     commonName,
     organizationName,
