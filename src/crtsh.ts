@@ -9,9 +9,9 @@ export interface CTLogEntry {
   issuer_name: string
   name_value: string
   id: number
-  entry_timestamp: Date
-  not_before: Date
-  not_after: Date
+  entry_timestamp: string
+  not_before: string
+  not_after: string
 }
 
 export interface CertInfo {
@@ -53,6 +53,8 @@ export async function fetchCertInfo(
   const url = `https://crt.sh/?id=${entry_id}`
   const r = await fetch(url, COMMON_INIT)
   const d = await r.text()
+
+  // TODO: parse PEM (X509 cert in ASN.1) directly instead of text searching 
 
   // extract cert text
   const textStart = d.indexOf(PATTERN_TEXT_START)

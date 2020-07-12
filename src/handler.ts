@@ -1,5 +1,5 @@
 import { cached } from './utils'
-import { handleSearch } from './search'
+import { handleSearch } from './query'
 
 export async function handleEvent(event: FetchEvent): Promise<Response> {
   const request = event.request
@@ -9,7 +9,7 @@ export async function handleEvent(event: FetchEvent): Promise<Response> {
       case '/':
         return new Response(`request method: ${request.method}`)
         break
-      case '/search':
+      case '/query':
         return await cached(handleSearch)(event)
         break
       default:

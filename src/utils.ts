@@ -38,3 +38,14 @@ export function isSubdomain(sub: string, domain: string): boolean {
       sub.charAt(sub.length - domain.length - 1) === '.')
   )
 }
+
+export function parseDateISO8601(dateString: string): number {
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse
+  // https://tc39.es/ecma262/#sec-date-time-string-format
+  if (!dateString.includes('+') && !dateString.endsWith('Z')) {
+    dateString += 'Z'
+  }
+  return Date.parse(dateString)
+}
+
+export const ninetyDaysInMilliseconds = 90 * 24 * 60 * 60 * 1000
