@@ -12,7 +12,7 @@ https://mdfp-san.bamboo.workers.dev/
 
 ### Example
 
-https://mdfp-san.bamboo.workers.dev/search?q=example.org
+https://mdfp-san.bamboo.workers.dev/query?q=example.org
 
 ## Notes / TODOs
 

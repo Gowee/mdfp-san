@@ -1,3 +1,5 @@
+import { USER_AGENT } from "./config"
+
 export interface CTLogEntry {
   issuer_ca_id: number
   issuer_name: string
@@ -23,7 +25,7 @@ const COMMON_INIT = {
     cacheEverything: true, // override the default "cacheability" of the asset. For TTL, Cloudflare will still rely on headers set by the origin.
   },
   headers: {
-    'User-Agent': 'mdfp-san/0.1 (+https://github.com/Gowee/mdfp-san)',
+    'User-Agent': USER_AGENT,
   },
 }
 

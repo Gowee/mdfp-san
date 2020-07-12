@@ -1,6 +1,7 @@
 import { cached } from './utils'
 import { ClientError } from './types'
 import { handleQuery } from './query'
+import { PROJECT_HOMEPAGE } from './config'
 
 export async function handleEvent(event: FetchEvent): Promise<Response> {
   const request = event.request
@@ -8,7 +9,7 @@ export async function handleEvent(event: FetchEvent): Promise<Response> {
   try {
     switch (url.pathname) {
       case '/':
-        return new Response(`request method: ${request.method}`)
+        return new Response(`See ${PROJECT_HOMEPAGE} for more info.`, { status: 302, headers: { Location: PROJECT_HOMEPAGE } })
         break
       case '/query':
         return await cached(handleQuery)(event)

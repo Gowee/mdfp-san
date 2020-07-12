@@ -1,8 +1,8 @@
 {
-  "name": "pname",
-  "version": "1.0.0",
-  "description": "Cloudflare worker TypeScript template",
-  "main": "index.js",
+  "name": "mdfp-san",
+  "version": "0.2",
+  "description": "Search TLS certificates in public CT logs for possibly related domains",
+  "main": "index.ts",
   "scripts": {
     "build": "webpack",
     "dev": "NODE_ENV=development npm run build",
@@ -11,7 +11,7 @@
     "test": "npm run test:clean && npm run transpile && mocha --require source-map-support/register --recursive transpiled/test",
     "transpile": "tsc --project ./test"
   },
-  "author": "author",
+  "author": "Hung-I Wang",
   "license": "MIT OR Apache-2.0",
   "dependencies": {
     "@blakeembrey/deque": "^1.0.5"
