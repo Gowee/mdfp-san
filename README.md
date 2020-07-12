@@ -15,7 +15,7 @@ https://mdfp-san.bamboo.workers.dev/
 - https://mdfp-san.bamboo.workers.dev/query?q=jd.hk
 - https://mdfp-san.bamboo.workers.dev/query?q=yandex.com
 
-(*It does take a long while for the first loading*)
+(*It does take a **long** while for the first loading.*)
 
 ## Notes / TODOs
 

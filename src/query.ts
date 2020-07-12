@@ -22,6 +22,7 @@ export async function handleQuery(request: Request): Promise<Response> {
     throw new ClientError('Query parameter is empty.')
   }
 
+  const startTime = Date.now(); 
   const seenCerts = new Set<number>()
   const seenOrgs = new Set([initialQ])
   const qq = new Deque([initialQ]) // queue of candidate q
@@ -107,13 +108,15 @@ export async function handleQuery(request: Request): Promise<Response> {
     }
   }
 
+  const endTime = Date.now() - startTime
   return new Response(
     JSON.stringify({
       domains: Array.from(domains),
-      _t: new Date(),
       _certs_related: processedCerts,
       _certs_seen: seenCerts.size,
       _requests_sent: requests,
+      _time_consumed: endTime / 1000,
+      _update_time: new Date(),
     }),
     { headers: { 'Content-Type': 'application/json' } },
   )
