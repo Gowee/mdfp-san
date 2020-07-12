@@ -7,11 +7,15 @@ import {
   ninetyDaysInMilliseconds,
 } from './utils'
 import * as Crtsh from './crtsh'
-import { FILTERED_COMMON_NAMES, FILTERED_ISSUER_NAMES, REQUEST_LIMIT } from './config'
+import {
+  FILTERED_COMMON_NAMES,
+  FILTERED_ISSUER_NAMES,
+  REQUEST_LIMIT,
+} from './config'
 
-export async function handleSearch(request: Request): Promise<Response> {
+export async function handleQuery(request: Request): Promise<Response> {
   const url = new URL(request.url)
-  
+
   const initialQ = url.searchParams.get('q')
   if (initialQ === null) {
     throw new ClientError('Query parameter is empty.')
@@ -25,9 +29,9 @@ export async function handleSearch(request: Request): Promise<Response> {
 
   const domains = new Set()
 
-  while (qq.size > 0 && domains.size <= 200 && requests < REQUEST_LIMIT) {
+  while (qq.size > 0 && domains.size <= 100 && requests < REQUEST_LIMIT) {
     const q = qq.pop()
-    console.log("Querying keyword: ", q);
+    console.log('Querying keyword: ', q)
 
     const entries = await Crtsh.searchCT(q)
     requests += 1
@@ -47,10 +51,9 @@ export async function handleSearch(request: Request): Promise<Response> {
       // Here make sure at least one cert is processed to avoid empty response.
       if (
         entry.issuer_name.match(FILTERED_ISSUER_NAMES) ||
-        (
-          processedCerts > 1 &&
+        (processedCerts > 1 &&
           parseDateISO8601(entry.not_after) + ninetyDaysInMilliseconds <
-          new Date().getTime())
+            new Date().getTime())
       ) {
         continue
       }
@@ -91,7 +94,7 @@ export async function handleSearch(request: Request): Promise<Response> {
           qq.push(base_domain)
         }
       }
-      
+
       // add org names as new candidate query keywords
       if (cert.organizationName && !seenOrgs.has(cert.organizationName)) {
         seenOrgs.add(cert.organizationName)

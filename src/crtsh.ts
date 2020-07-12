@@ -54,7 +54,7 @@ export async function fetchCertInfo(
   const r = await fetch(url, COMMON_INIT)
   const d = await r.text()
 
-  // TODO: parse PEM (X509 cert in ASN.1) directly instead of text searching 
+  // TODO: parse PEM (X509 cert in ASN.1) directly instead of text searching
 
   // extract cert text
   const textStart = d.indexOf(PATTERN_TEXT_START)
@@ -73,9 +73,6 @@ export async function fetchCertInfo(
       }
     })
   // console.log(textStart, textEnd, text)
-  // text.replace('&nbsp;', ' ')
-  // text.replace('<BR>', '\n')
-  // console.log(text)
 
   // extract subject
   const subject = PATTERN_SUBJECT.exec(text)
