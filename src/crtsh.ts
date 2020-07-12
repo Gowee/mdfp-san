@@ -1,4 +1,4 @@
-import { USER_AGENT } from "./config"
+import { USER_AGENT } from './config'
 
 export interface CTLogEntry {
   issuer_ca_id: number

@@ -1,6 +1,6 @@
 {
   "name": "mdfp-san",
-  "version": "0.2",
+  "version": "0.2.0",
   "description": "Search TLS certificates in public CT logs for possibly related domains",
   "main": "index.ts",
   "scripts": {

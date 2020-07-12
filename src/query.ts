@@ -22,7 +22,7 @@ export async function handleQuery(request: Request): Promise<Response> {
     throw new ClientError('Query parameter is empty.')
   }
 
-  const startTime = Date.now(); 
+  const startTime = Date.now()
   const seenCerts = new Set<number>()
   const seenOrgs = new Set([initialQ])
   const qq = new Deque([initialQ]) // queue of candidate q

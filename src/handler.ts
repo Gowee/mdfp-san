@@ -9,7 +9,10 @@ export async function handleEvent(event: FetchEvent): Promise<Response> {
   try {
     switch (url.pathname) {
       case '/':
-        return new Response(`See ${PROJECT_HOMEPAGE} for more info.`, { status: 302, headers: { Location: PROJECT_HOMEPAGE } })
+        return new Response(`See ${PROJECT_HOMEPAGE} for more info.`, {
+          status: 302,
+          headers: { Location: PROJECT_HOMEPAGE },
+        })
         break
       case '/query':
         return await cached(handleQuery)(event)

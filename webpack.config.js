@@ -26,7 +26,8 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      PACKAGE: JSON.stringify(require("./package.json"))
-    })
+      PACKAGE_NAME: JSON.stringify(require('./package.json').name),
+      PACKAGE_VERSION: JSON.stringify(require('./package.json').version),
+    }),
   ],
 }
